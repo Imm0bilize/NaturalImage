@@ -56,13 +56,14 @@ class DatasetGenerator:
         return self._normalize(file), self._to_one_hot(class_number)
 
     def get_dataset(self) -> Dataset:
-        dataset: Dataset = tf.data.Dataset.from_tensor_slices(self.paths_to_data)
-        dataset: Dataset = dataset.map(lambda x: self._load_file(x), num_parallel_calls=self._autotune)
+        dataset: tf.data.Dataset = tf.data.Dataset.from_tensor_slices(self.paths_to_data)
+        dataset: tf.data.Dataset = dataset.map(lambda x: self._load_file(x), num_parallel_calls=self._autotune)
 
         if self.is_train:
-            dataset: Dataset = dataset.shuffle(buffer_size=self.ds_len, seed=self.seed)
-            dataset: Dataset = dataset.map(lambda x, y: self._augmentation(x, y), num_parallel_calls=self._autotune)
+            dataset: tf.data.Dataset = dataset.shuffle(buffer_size=self.ds_len, seed=self.seed)
+            dataset: tf.data.Dataset = dataset.map(lambda x, y: self._augmentation(x, y),
+                                                   num_parallel_calls=self._autotune)
 
-        dataset: Dataset = dataset.batch(self.batch_size)
-        dataset: Dataset = dataset.repeat()
+        dataset: tf.data.Dataset = dataset.batch(self.batch_size)
+        dataset: tf.data.Dataset = dataset.repeat()
         return dataset
