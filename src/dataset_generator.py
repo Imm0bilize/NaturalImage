@@ -3,7 +3,6 @@ import tensorflow as tf
 from typing import Tuple, List
 from tf_agents.typing.types import Tensor
 
-from utils import Dataset
 from config import IMG_SIZE
 
 
