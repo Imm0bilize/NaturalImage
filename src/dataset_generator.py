@@ -54,7 +54,7 @@ class DatasetGenerator:
 
         return self._normalize(file), self._to_one_hot(class_number)
 
-    def get_dataset(self) -> Dataset:
+    def get_dataset(self) -> tf.data.Dataset:
         dataset: tf.data.Dataset = tf.data.Dataset.from_tensor_slices(self.paths_to_data)
         dataset: tf.data.Dataset = dataset.map(lambda x: self._load_file(x), num_parallel_calls=self._autotune)
 
