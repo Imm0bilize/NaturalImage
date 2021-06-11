@@ -1,1 +1,18 @@
+# IMAGE
 IMG_SIZE = 224
+
+# DATA
+PATH_TO_DATA = "data/natural_images"
+
+# TRAIN
+N_CLASSES = 8
+LR_RATE = 1e-4
+BATCH_SIZE = 64
+N_EPOCHS = 50
+PATH_TO_TRAINED_WEIGHTS = 'model_weights/weights.h5'
+
+# VAL
+VAL_SPLIT = 0.2
+
+# RANDOM
+SEED = 784
