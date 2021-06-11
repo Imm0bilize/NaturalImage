@@ -7,8 +7,8 @@ from config import IMG_SIZE
 
 
 class DatasetGenerator:
-    def __init__(self, path_to_folder: str, batch_size: int, is_train: bool, seed: int):
-        self.paths_to_data: List[str] = tf.io.gfile.glob(f'{path_to_folder}/*/*.jpg')
+    def __init__(self, paths_to_data: List[str], batch_size: int, is_train: bool, seed: int):
+        self.paths_to_data: List[str] = paths_to_data
         self.ds_len: int = len(self.paths_to_data)
 
         if not self.ds_len:
@@ -40,7 +40,8 @@ class DatasetGenerator:
         return x
 
     def _to_one_hot(self, y: Tensor) -> Tensor:
-        y: tf.Tensor = tf.one_hot(y, depth=self._n_classes)
+        y: Tensor = tf.one_hot(y, depth=self._n_classes)
+        y: Tensor = tf.squeeze(y)
         return y
 
     def _load_file(self, path: str) -> Tuple[Tensor, Tensor]:
