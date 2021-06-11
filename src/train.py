@@ -41,11 +41,12 @@ def start_train(train_ds: Dataset, train_steps: int, val_ds: Dataset, val_steps:
             print(f"Train loss: {tf.math.reduce_mean(train_loss)}\t"
                   f"Train accuracy: {train_acc_metric.result().numpy()}")
 
-            if not batch_idx % train_steps:
+            if not batch_idx % train_steps and not batch_idx:
                 for val_batch_idx, (val_x, val_y) in enumerate(val_ds):
                     val_loss: Tensor = train_step(val_x, val_y)
-                    print(f"Val loss: {val_loss}\tVal accuracy:{val_acc_metric}")
-                    if not val_batch_idx % val_steps:
+                    print(f"Val loss: {tf.math.reduce_mean(val_loss)}\t"
+                          f"Val accuracy: {val_acc_metric.result().numpy()}")
+                    if not val_batch_idx % val_steps and not val_batch_idx:
                         break
 
 
@@ -54,13 +55,13 @@ def main() -> None:
     tf.random.set_seed(SEED)
 
     all_paths: List[str] = tf.io.gfile.glob(f'{PATH_TO_DATA}/*/*.jpg')
-    all_paths: List[str] = tf.random.shuffle(all_paths)
+    all_paths: List[str] = tf.random.shuffle(all_paths, seed=SEED)
 
-    val_paths: List[str] = all_paths[:len(all_paths)*VAL_SPLIT]
+    val_paths: List[str] = all_paths[:int(len(all_paths)*VAL_SPLIT)]
     val_ds: Dataset = DatasetGenerator(val_paths, BATCH_SIZE, True, SEED)
     val_steps: int = len(val_ds) // BATCH_SIZE
 
-    train_paths: List[str] = all_paths[len(all_paths)*VAL_SPLIT:]
+    train_paths: List[str] = all_paths[int(len(all_paths)*VAL_SPLIT):]
     train_ds: Dataset = DatasetGenerator(train_paths, BATCH_SIZE, True, SEED)
     train_steps: int = len(train_ds) // BATCH_SIZE
 
