@@ -11,12 +11,12 @@ Tensorflow based implementation with torch style.
 Used model VGG16.
 ![Image example](images/vgg16.png)
 
-###Install dependencies
+### Install dependencies
 ```bash
     pip install -r requirements.txt
 ```
 
-###Starting train
+### Starting train
 ```bash
     python src/train.py 
 ```
